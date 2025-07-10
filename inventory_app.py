@@ -17,7 +17,8 @@ if uploaded_file is not None:
         X = df[['price', 'stock levels', 'availability']]
         y = df['number of products sold']
  
-        model = LinearRegression()model.fit(X, y)
+        model = LinearRegression()
+        model.fit(X, y)
  
         df['predicted_sales'] = model.predict(X)
         df['optimized_stock'] = df['predicted_sales'] * 1.10  # Add 10% buffer
