@@ -43,7 +43,7 @@ selected_sku = st.selectbox("Select SKU", sku_list)
  
 # Display metrics for selected SKU
 product_row = df[df['SKU'] == selected_sku].iloc[0]
- 
+st.write(product_row)
 st.markdown("### 🔍 Product Inventory Insights")
  
 st.write(f"**Predicted Sales:** {round(product_row['predicted_sales'])}")
