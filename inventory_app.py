@@ -35,6 +35,7 @@ df['optimized_stock'] = df['predicted_sales'] * 1.10  # Add 10% buffer
  
 # Streamlit UI
 st.title("📦 Inventory Forecast Dashboard")
+st.write(df.columns)
  
 # SKU Selector
 sku_list = df['sku'].unique()
