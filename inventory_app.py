@@ -29,6 +29,6 @@ if uploaded_file is not None:
         df['predicted_sales'] = model.predict(X)
  
         st.subheader("Predicted Sales")
-        st.write(df[['price', 'availability', 'number of products sold', 'predicted_sales']])
+        st.write(df[['Price', 'Stock levels', 'Number of products sold', 'predicted_sales']])
     else:
         st.error("❌ Required columns not found in dataset. Please make sure your CSV contains: Price, Availability, and Number of products sold.")
