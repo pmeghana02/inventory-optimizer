@@ -15,11 +15,11 @@ if uploaded_file is not None:
     st.subheader("Preview of Uploaded Data")
     st.write(df.head())
  
-    required_columns = ['Price', 'Stock levels', 'Number of products sold']
+    required_columns = ['price', 'availability', 'number of products sold']
  
     if all(col in df.columns for col in required_columns):
-        X = df[['Price', 'Stock levels']]
-        y = df['Number of products sold']
+        X = df[['price', 'availability']]
+        y = df['number of products sold']
  
         # Build and train the model
         model = LinearRegression()
