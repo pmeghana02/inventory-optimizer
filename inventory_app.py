@@ -31,4 +31,4 @@ if uploaded_file is not None:
         st.subheader("Predicted Sales")
         st.write(df[['price', 'availability', 'number of products sold', 'predicted_sales']])
     else:
-        st.error("❌ Required columns not found in dataset. Please make sure your CSV contains: Price, Availability, and Number of products sold."
+        st.error("❌ Required columns not found in dataset. Please make sure your CSV contains: Price, Availability, and Number of products sold.")
