@@ -1,22 +1,51 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
  
-st.title("Supply Chain Inventory Optimizer")
+# Load the data
+df = pd.read_csv("supply_chain_data.csv")
  
-uploaded_file = st.file_uploader("Upload your Supply Chain CSV file", type="csv")
-
-if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)
-    
-    required_columns = ['price', 'stock levels', 'number of products sold']
-    if all(col in df.columns for col in required_columns):
-        st.subheader("Preview of Uploaded Data")
-        st.write(df.head())
+# Drop duplicates and handle missing values
+df.drop_duplicates(inplace=True)
+df.dropna(subset=['Price', 'Lead times', 'Number of products sold', 'Revenue generated', 'Stock levels', 'Order quantities'], inplace=True)
  
-        if 'predicted_sales' in df.columns and 'optimized_stock' in df.columns:
-            st.subheader("Predicted Sales vs Optimized Stock")
-            st.line_chart(df[['predicted_sales', 'optimized_stock']])
-        else:
-            st.warning("Predicted columns not found in uploaded file.")
-    else:
-        st.error("Required columns not found. Please ensure your CSV contains 'price', 'stock levels', and 'number of products sold'")
+# Select features and target
+features = ['Price', 'Lead times', 'Number of products sold', 'Revenue generated', 'Stock levels']
+target = 'Order quantities'
+ 
+X = df[features]
+y = df[target]
+ 
+# Train the model
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model = RandomForestRegressor()
+model.fit(X_train, y_train)
+ 
+# Make predictions for full dataset
+df['predicted_sales'] = model.predict(X)
+ 
+# Calculate safety stock and reorder point per row
+Z = 1.65  # 95% service level
+df['daily_demand'] = df['Number of products sold'] / 30
+df['safety_stock'] = Z * df['daily_demand'].std() * np.sqrt(df['Lead times'])
+df['reorder_point'] = (df['daily_demand'] * df['Lead times']) + df['safety_stock']
+df['optimized_stock'] = df['predicted_sales'] * 1.10  # Add 10% buffer
+ 
+# Streamlit UI
+st.title("📦 Inventory Forecast Dashboard")
+ 
+# SKU Selector
+sku_list = df['SKU'].unique()
+selected_sku = st.selectbox("Select SKU", sku_list)
+ 
+# Display metrics for selected SKU
+product_row = df[df['SKU'] == selected_sku].iloc[0]
+ 
+st.markdown("### 🔍 Product Inventory Insights")
+ 
+st.write(f"**Predicted Sales:** {round(product_row['predicted_sales'])}")
+st.write(f"**Safety Stock:** {round(product_row['safety_stock'])}")
+st.write(f"**Reorder Point:** {round(product_row['reorder_point'])}")
+st.write(f"**Optimized Stock (10% buffer):** {round(product_row['optimized_stock'])}")
