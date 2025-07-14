@@ -35,15 +35,14 @@ df['optimized_stock'] = df['predicted_sales'] * 1.10  # Add 10% buffer
  
 # Streamlit UI
 st.title("📦 Inventory Forecast Dashboard")
-st.write(df.columns)
+
  
 # SKU Selector
-sku_list = df['sku'].unique()
-selected_sku = st.selectbox("Select sku", sku_list)
+sku_list = df['SKU'].unique()
+selected_sku = st.selectbox("Select SKU", sku_list)
  
 # Display metrics for selected SKU
-product_row = df[df['sku'] == selected_sku].iloc[0]
-st.write(product_row)
+product_row = df[df['SKU'] == selected_sku].iloc[0]
  
 st.markdown("### 🔍 Product Inventory Insights")
  
