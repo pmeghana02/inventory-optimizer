@@ -15,11 +15,11 @@ if uploaded_file is not None:
     st.subheader("Preview of Uploaded Data")
     st.write(df.head())
  
-    required_columns = ['price', 'availability', 'number of products sold']
+    required_columns = ['Price', 'Stock levels', 'Number of products sold']
  
     if all(col in df.columns for col in required_columns):
-        X = df[['price', 'availability']]
-        y = df['number of products sold']
+        X = df[['Price', 'Stock levels']]
+        y = df['Number of products sold']
  
         # Build and train the model
         model = LinearRegression()
@@ -31,4 +31,4 @@ if uploaded_file is not None:
         st.subheader("Predicted Sales")
         st.write(df[['price', 'availability', 'number of products sold', 'predicted_sales']])
     else:
-        st.error("❌ Required columns not found in dataset. Please make sure your CSV contains: Price, Availability, and Number of products sold.")
+        st.error("❌ Required columns not found in dataset. Please make sure your CSV contains: Price, Availability, and Number of products sold."
