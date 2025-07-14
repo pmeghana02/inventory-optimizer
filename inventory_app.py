@@ -10,7 +10,6 @@ if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     
     # Normalize column names to lowercase
-    df.columns = df.columns.str.lower()
  
     st.subheader("Preview of Uploaded Data")
     st.write(df.head())
